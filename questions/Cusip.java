@@ -45,6 +45,9 @@ public class Cusip {
                 String line = sc.nextLine();
                 if (isNumeric(line)) {
                     price = new BigDecimal(line);
+                    if (cusip == null) {
+                        System.err.println("Incorrect format, cusip must be available before the price!:" + price);
+                    }
                 } else {
                     if (isValidCusip(line)) {
                         //print the previous cusip closing price
@@ -53,7 +56,8 @@ public class Cusip {
                         }
                         cusip = line;
                     } else {
-                        //Error handling--invalid cusip
+                        System.err.println("Invalid cusip found:" + line);
+
                     }
                 }
             }
@@ -89,7 +93,7 @@ public class Cusip {
         }
         return true;
     }
-
+    //For additional check use Apache Commons Lang utility function: NumberUtils.isCreatable, NumberUtils.isNumber or StringUtils.isNumeric.
     private  static boolean isNumeric(String s) {
         if (s == null)
             return false;
@@ -108,5 +112,4 @@ public class Cusip {
         }
         return true;
     }
-
 }
