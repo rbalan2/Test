@@ -41,6 +41,7 @@ public class Cusip {
         ) {
             String cusip = null;
             BigDecimal price = null;
+
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
                 if (isNumeric(line)) {
@@ -54,16 +55,29 @@ public class Cusip {
                         if (cusip != null && price != null) {
                             System.out.println("Cusip:" + cusip + " Closing price:" + df.format(price));
                         }
+                        if (cusip != null && price == null) {
+                            System.err.println("Cusip:" + cusip + " doesn't have closing price");
+                        }
                         cusip = line;
+                        price=null;
                     } else {
                         System.err.println("Invalid cusip found:" + line);
-
+                        System.err.println("Skipping prices to until next cusip!");
+                        do {
+                            if (sc.hasNextLine())
+                                line = sc.nextLine();
+                        } while (isNumeric(line));
+                        cusip = line;
+                        price=null;
                     }
                 }
             }
             //Last matched cusip and closing price
             if (cusip != null && price != null) {
-                System.out.println("Cusip:" + cusip + " Closed price:" + df.format(price));
+                System.out.println("Cusip:" + cusip + " Closing price:" + df.format(price));
+            }
+            if (cusip != null && price == null) {
+                System.err.println("Cusip:" + cusip + " doesn't have closing price");
             }
 
             // note that Scanner suppresses exceptions
@@ -93,8 +107,9 @@ public class Cusip {
         }
         return true;
     }
-    //For additional check use Apache Commons Lang utility function: NumberUtils.isCreatable, NumberUtils.isNumber or StringUtils.isNumeric.
-    private  static boolean isNumeric(String s) {
+
+    //For additional number format check use Apache Commons Lang utility function: NumberUtils.isCreatable, NumberUtils.isNumber or StringUtils.isNumeric.
+    private static boolean isNumeric(String s) {
         if (s == null)
             return false;
 
