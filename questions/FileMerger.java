@@ -20,7 +20,7 @@ public class FileMerger {
         }
     }
 
-    private void mergeSortedFiles(String file1, String file2, String outFileName) throws IOException {
+    public void mergeSortedFiles(String file1, String file2, String outFileName) throws IOException {
 
         //Auto closable-Java 8
         try (FileInputStream inputStream1 = new FileInputStream(file1);
